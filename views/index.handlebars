@@ -1,0 +1,73 @@
+{{!-- Setup the index.handlebars to have the template that Handlebars can render onto.
+Create a button in index.handlebars that will submit the user input into the database. --}}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+  <div class = "row">
+  <div class = "col-md-2"> </div>
+  <div class = "col md-4">
+  <img src="assets/images/burger.png"  id = "burger-image" class="img-responsive" alt="Responsive image">
+  </div>
+  <div clas = "col-md-4">
+     <h1 class="text-center">Eat-Da-Burger!</h1>
+  </div>
+  <div class = "col-md-2"> </div>
+    </div>
+  </div>
+</div>
+<main>
+  <div class="container" id ="main">
+    <div class="row">
+<div class="col-md-4" id = "burger-list">
+<h2 class = "text-center"> Available Burgers </h2>
+<ul>
+				{{#each burgers}}
+					{{#unless this.devoured}}
+						<li>
+							<h5>{{this.id}}. {{this.burger_name}}
+								<form action='burgers/update/{{this.id}}?_method=PUT' method='POST'>
+									<input type='hidden' name='devoured' value='true'>
+									<button type='submit' class="btn btn-default">Devour it!!</button>
+								</form>
+							</h5>
+						</li>
+					{{/unless}}
+				{{/each}}
+</ul>
+</div>
+<div class = "col-md-4" id = "form-area">
+      <form class="create-update-form" action="burgers/create" method="POST">
+      <input type="text" id="burger-form" name="burger_name" placeholder= "">
+      <button type="submit" class="addBurgerButton">Submit</button>
+</form>
+<p> Enter A Burger You Want To Eat And Hit The Submit Button </p>
+</div>
+<div class = "col-md-4" id = "devoured-burgers">
+<h2 class = "text-center"> Devoured Burgers </h2>
+<ul>
+				{{#each burgers}}
+					{{#if this.devoured}}
+						<li>
+							<h5 class="text-muted">{{this.id}}. {{this.burger_name}}</h5>
+						</li>
+					{{/if}}
+				{{/each}}
+</ul>
+</div>
+
+<script type = "text/javascript">
+function validateForm(){
+  var isValid = true;
+
+  var elements = document.getElementById('create-update-form').getElementsByTagName('input');
+
+  for(var i=0; i < elements.length; i++){
+    if(elements[i].value.length < 1){
+      isValid = false;
+    }
+  }
+
+  if(isValid){
+    document.getElementById('ss-form').submit();
+  }
+}
+</script>
